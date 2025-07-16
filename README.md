@@ -1,66 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIMAPEL Sumba Barat Daya
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![SIMAPEL Logo (Optional - replace with your project logo)](https://via.placeholder.com/150/007bff/FFFFFF?text=SIMAPEL+SBD)
 
-## About Laravel
+Sistem Informasi Manajemen Data Pembangunan (SIMAPEL) Sumba Barat Daya adalah aplikasi web yang dirancang untuk membantu Pemerintah Kabupaten Sumba Barat Daya dalam merencanakan, memantau, dan mengelola proyek-proyek pembangunan secara lebih efisien dan transparan. Aplikasi ini mengintegrasikan data proyek dengan visualisasi geografis menggunakan peta digital, serta menyediakan fitur pelaporan dan manajemen pengguna.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+SIMAPEL Sumba Barat Daya hadir dengan berbagai fitur esensial untuk manajemen pembangunan yang efektif:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Manajemen Proyek (CRUD)**: Kemampuan lengkap untuk Menambah, Melihat, Mengubah, dan Menghapus data proyek pembangunan.
+* **Visualisasi Peta Interaktif**: Menampilkan sebaran lokasi proyek di peta digital menggunakan Leaflet.js, dengan *marker* berwarna berdasarkan status proyek (On-Track, Terlambat, Selesai).
+* **Peta di Formulir Input**: Memudahkan entri lokasi proyek dengan mengklik langsung pada peta di halaman tambah dan edit proyek.
+* **Dashboard Statistik**: Menyajikan ringkasan visual dan statistik kunci pembangunan (total proyek, anggaran, progres, distribusi per sektor/status) untuk mendukung pengambilan keputusan strategis.
+* **Filter dan Pencarian Canggih**: Memungkinkan pencarian dan pemfilteran data proyek berdasarkan nama, dinas penanggung jawab, sektor, atau status.
+* **Manajemen Dokumen & Foto Proyek**: Fitur unggah multi-foto dan dokumen (PDF, DOCX, XLSX) ke setiap proyek, dengan pratinjau *client-side*, penyimpanan yang terorganisir, dan akses unduh yang terkontrol.
+* **Manajemen Pengguna & Peran (RBAC)**: Modul untuk mengelola pengguna sistem (tambah, edit, hapus) serta memberikan peran dan izin (menggunakan Spatie Laravel Permission) untuk mengontrol hak akses terhadap fitur-fitur aplikasi.
+* **Ekspor Data ke Excel**: Kemampuan untuk mengekspor data proyek ke format Excel (.xlsx) untuk keperluan pelaporan dan analisis *offline*.
+* **Antarmuka Admin Responsif**: Tampilan admin yang rapi dan responsif dengan navigasi *sidebar* menggunakan Tailwind CSS dan Alpine.js.
 
-## Learning Laravel
+## Teknologi yang Digunakan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Backend**: Laravel (PHP Framework)
+* **Database**: PostgreSQL (dengan dukungan spasial PostGIS untuk data geografis)
+* **Frontend**: Blade Templates, Tailwind CSS, Alpine.js (untuk interaktivitas UI)
+* **Peta**: Leaflet.js
+* **Ekspor Data**: Maatwebsite/Laravel-Excel
+* **Manajemen Peran & Izin**: Spatie/Laravel-Permission
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Panduan Instalasi (Lokal)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek SIMAPEL di lingkungan pengembangan lokal Anda (direkomendasikan menggunakan **Laragon** untuk Windows).
 
-## Laravel Sponsors
+**Pastikan Anda memiliki:**
+* PHP (v8.1 atau lebih tinggi)
+* Composer
+* Node.js & NPM
+* PostgreSQL (dengan ekstensi PostGIS aktif di database Anda)
+* Laragon (untuk lingkungan server lokal di Windows)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1.  **Clone Repositori:**
+    ```bash
+    git clone [URL_REPOSITORI_ANDA] simapel-backend
+    cd simapel-backend
+    ```
 
-### Premium Partners
+2.  **Instal Dependensi Composer:**
+    ```bash
+    composer install
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3.  **Konfigurasi Environment (`.env`):**
+    * Buat file `.env` dari `.env.example`:
+        ```bash
+        cp .env.example .env
+        ```
+    * Buka file `.env` dan sesuaikan pengaturan database Anda untuk PostgreSQL:
+        ```dotenv
+        DB_CONNECTION=pgsql
+        DB_HOST=127.0.0.1
+        DB_PORT=5432
+        DB_DATABASE=simapel_db # Ganti dengan nama database Anda
+        DB_USERNAME=simapel_user # Ganti dengan username database Anda
+        DB_PASSWORD=password_anda_disini # Ganti dengan password database Anda
 
-## Contributing
+        APP_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000) # SESUAIKAN dengan URL Laragon/akses Anda (contoh: http://localhost, http://nama_proyek.test)
+        ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4.  **Buat Kunci Aplikasi:**
+    ```bash
+    php artisan key:generate
+    ```
 
-## Code of Conduct
+5.  **Jalankan Migrasi Database dan Seeder:**
+    * **Penting:** Pastikan database `simapel_db` (atau nama yang Anda gunakan) sudah ada di PostgreSQL Anda dan ekstensi PostGIS sudah diaktifkan di dalamnya (`CREATE EXTENSION postgis;`).
+    * Perintah ini akan menghapus semua tabel dan membuat ulang, lalu mengisi data *dummy* dan peran/izin default.
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6.  **Buat Folder Penyimpanan Manual & Sesuaikan `filesystems.php`:**
+    * Di File Explorer, navigasi ke `storage/app/` di root proyek Anda.
+    * Pastikan ada folder `private` di dalamnya, lalu pastikan ada folder `public` di dalam `private`. Jadi, strukturnya: `storage/app/private/public/`. Jika `private` tidak ada, buatlah.
+    * Di dalam `public` (yang berada di `private`), buat folder `project_media`, lalu di dalamnya buat `photos` dan `documents`. Jadi, `storage/app/private/public/project_media/photos` dan `storage/app/private/public/project_media/documents`.
+    * **Buka `config/filesystems.php`** dan pastikan konfigurasi disk `public` menunjuk ke lokasi tersebut:
+        ```php
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/public'), # Sesuaikan dengan lokasi penyimpanan Anda
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        ```
 
-## Security Vulnerabilities
+7.  **Buat Symlink Storage (Penting untuk Akses File Publik):**
+    * **Buka Command Prompt/PowerShell sebagai ADMINISTRATOR.**
+    * Navigasi ke *root* folder proyek Anda: `cd C:\laragon\www\laravel\simapel-backend`
+    * Jalankan perintah ini:
+        ```bash
+        php artisan storage:link
+        ```
+        Anda harus melihat pesan "The [...] link has been connected."
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8.  **Instal Dependensi NPM dan Kompilasi Aset Frontend:**
+    ```bash
+    npm install
+    npm run dev
+    # Atau untuk mode pengawasan perubahan otomatis:
+    # npm run watch
+    ```
 
-## License
+9.  **Jalankan Server Laravel:**
+    ```bash
+    php artisan serve
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Penggunaan Aplikasi
+
+Setelah semua langkah instalasi selesai:
+
+1.  Akses aplikasi di browser Anda melalui URL Laravel (biasanya `http://127.0.0.1:8000`).
+2.  Anda akan langsung diarahkan ke halaman login.
+
+### Kredensial Login Default
+
+Setelah menjalankan `php artisan migrate:fresh --seed`, Anda akan memiliki dua akun pengguna default:
+
+* **Super Admin:**
+    * Email: `admin@simapel.com`
+    * Password: `password`
+    * Akses: Penuh ke semua fitur, termasuk Manajemen Pengguna.
+
+* **Staf Dinas:**
+    * Email: `staf@simapel.com`
+    * Password: `password`
+    * Akses: Hanya melihat modul proyek (Anda bisa mengubah izin ini melalui akun Super Admin di modul Manajemen Pengguna).
+
+## Fitur yang Akan Dikembangkan di Masa Depan (Opsional)
+
+* **Notifikasi Otomatis**: Pemberitahuan (email/sistem) untuk proyek yang mendekati tenggat waktu atau terlambat.
+* **Ekspor ke PDF**: Kemampuan ekspor data proyek ke format PDF.
+* **Integrasi Peta Lanjutan**: Menampilkan *popup* peta yang lebih kaya, atau analisis spasial sederhana.
+* **Dashboard Kustomisasi**: Memungkinkan admin mengkustomisasi widget di dashboard.
+* **Manajemen Pengaturan Sistem**: Mengelola variabel konfigurasi aplikasi melalui antarmuka admin.
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah [Lisensi MIT](https://opensource.org/licenses/MIT). Anda bebas untuk menggunakan, memodifikasi, dan mendistribusikannya.
+
+---
