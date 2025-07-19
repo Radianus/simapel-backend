@@ -4,11 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\MediaController;
-use App\Http\Controllers\Admin\UserController; // Import User Controller
-use Illuminate\Http\Request; // Tambahkan ini jika belum ada
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\PublicController;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,21 +21,8 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// --- Rute Halaman Utama ---
-Route::get('/', function () {
-    // Jika user sudah login, arahkan ke dashboard admin
-    if (Auth::check()) {
-        return redirect()->route('admin.dashboard');
-    }
-    // Jika belum login, arahkan ke halaman login
-    return redirect()->route('login');
-})->name('home');
-
-// Rute dashboard bawaan Laravel Breeze, kita akan ganti fungsinya
-// Sekarang, setelah login, user akan diarahkan ke admin.dashboard
+Route::get('/', [PublicController::class, 'index'])->name('public.home');
 Route::get('/dashboard', function (Request $request) {
-    // Ini adalah rute default /dashboard dari Breeze
-    // Kita bisa redirect ke admin.dashboard atau menampilkannya sendiri
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -52,9 +40,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/export', [ProjectController::class, 'export'])
             ->name('projects.export')
             ->middleware('permission:view projects'); // User harus punya izin 'view projects' untuk bisa export
-
+        // --- Rute Pengaturan Sistem ---
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+        // --- Rute Laporan PDF ---
+        Route::get('/reports/summary-projects-pdf', [ReportController::class, 'summaryProjectsPdf'])->name('reports.summary-projects.pdf');
     });
-
     // --- Rute untuk Download Media Terproteksi ---
     Route::get('/media/download/{id}/{filename}', [MediaController::class, 'download'])->name('media.download');
 });

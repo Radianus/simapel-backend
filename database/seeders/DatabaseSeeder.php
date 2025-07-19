@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'staf@simapel.com',
             'password' => bcrypt('password'),
         ]);
+
+        $this->call(DefaultSettingsSeeder::class);
     }
 }

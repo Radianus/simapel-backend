@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,12 +14,23 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
-        ]);
+        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        // Tambahkan log untuk melihat apakah scheduler ini dipanggil
+        Log::info('Scheduler is running and defining tasks.');
+
+        // Jadwalkan perintah untuk mengecek proyek terlambat
+        $schedule->command('projects:check-overdue')
+            ->everyMinute() // UBAH KE everyMinute() UNTUK PENGUJIAN
+            ->onSuccess(function () {
+                Log::info('projects:check-overdue command succeeded.');
+            })
+            ->onFailure(function () {
+                Log::error('projects:check-overdue command failed.');
+            });
+    })
+    ->create();

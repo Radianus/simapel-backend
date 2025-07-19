@@ -8,12 +8,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+                <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
                     <form method="POST" action="{{ route('admin.projects.update', $project) }}"
-                        enctype="multipart/form-data">
+                        class="p-6 dark:bg-gray-800" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-
                         <div class="mb-4">
                             <x-input-label for="name" :value="__('Nama Proyek')" />
                             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
@@ -59,7 +58,8 @@
                         <div class="mb-4">
                             <x-input-label for="description" :value="__('Deskripsi Proyek')" />
                             <textarea id="description" name="description" rows="4"
-                                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ old('description', $project->description) }}</textarea>
+                                class="block mt-1 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400 rounded-md shadow-sm">{{ old('description', $project->description) }}</textarea>
+                            </textarea>
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
@@ -72,23 +72,26 @@
                         </div>
 
                         <div class="mb-4">
-                            <x-input-label for="status" :value="__('Status Proyek')" />
+                            <x-input-label for="status" :value="__('Status Proyek')" class="text-gray-700 dark:text-gray-200" />
                             <select id="status" name="status"
-                                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                class="block mt-1 w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400 rounded-md shadow-sm">
                                 <option value="On-Track"
                                     {{ old('status', $project->status) == 'On-Track' ? 'selected' : '' }}>On-Track
                                 </option>
-                                <option value="Terlambat" {{ old('status') == 'Terlambat' ? 'selected' : '' }}>Terlambat
+                                <option value="Terlambat"
+                                    {{ old('status', $project->status) == 'Terlambat' ? 'selected' : '' }}>Terlambat
                                 </option>
-                                <option value="Selesai" {{ old('status') == 'Selesai' ? 'selected' : '' }}>Selesai
+                                <option value="Selesai"
+                                    {{ old('status', $project->status) == 'Selesai' ? 'selected' : '' }}>Selesai
                                 </option>
                             </select>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
 
+
                         {{-- Tampilan Media yang Sudah Ada --}}
                         @if ($project->media->isNotEmpty())
-                            <div class="mb-6 p-4 border rounded-md bg-gray-50">
+                            <div class="bg-gray-50 dark:bg-gray-700">
                                 <h3 class="font-semibold text-lg mb-3">Media Terunggah</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                     @foreach ($project->media as $mediaItem)
@@ -130,13 +133,6 @@
                                                     <span class="text-red-600">Hapus</span>
                                                 </label>
                                             </div>
-                                            {{-- DEBUGGING INFO (Tetap Biarkan) --}}
-                                            <div
-                                                class="absolute inset-x-0 bottom-0 bg-red-600 text-white text-xxs p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <p>Path: {{ $mediaItem->file_path }}</p>
-                                                <p>URL: {{ $mediaItem->display_url }}</p>
-                                            </div>
-                                            {{-- END DEBUGGING INFO --}}
                                         </div>
                                     @endforeach
                                 </div>

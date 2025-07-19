@@ -9,14 +9,6 @@ use Illuminate\Support\Facades\DB; // Untuk query agregasi
 
 class DashboardController extends Controller
 {
-    // Untuk saat ini, kita tidak akan menerapkan middleware permission di sini
-    // agar admin dan staf bisa melihat dashboard tanpa masalah izin.
-    // Jika nanti ada kebutuhan, kita bisa tambahkan:
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view dashboard'); // Contoh izin baru
-    // }
-
     /**
      * Menampilkan halaman dashboard utama.
      *
@@ -42,6 +34,19 @@ class DashboardController extends Controller
             ->groupBy('status')
             ->get();
 
+        // --- DATA BARU UNTUK DASHBOARD ---
+        // Data untuk grafik: Proyek per Dinas Penanggung Jawab
+        $projectsPerAgency = Project::select('responsible_agency', DB::raw('count(*) as total'))
+            ->groupBy('responsible_agency')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        // Data untuk grafik: Pagu Anggaran per Sektor
+        $budgetPerSector = Project::select('sector', DB::raw('sum(budget) as total_budget'))
+            ->groupBy('sector')
+            ->orderBy('total_budget', 'desc')
+            ->get();
+        // --- AKHIR DATA BARU ---
         // Kirim semua data ke view
         return view('admin.dashboard', compact(
             'totalProjects',
@@ -50,7 +55,9 @@ class DashboardController extends Controller
             'lateProjects',
             'onTrackProjects',
             'projectsPerSector',
-            'projectsPerStatus'
+            'projectsPerStatus',
+            'projectsPerAgency', // Tambahkan ini
+            'budgetPerSector'    // Tambahkan ini
         ));
     }
 }

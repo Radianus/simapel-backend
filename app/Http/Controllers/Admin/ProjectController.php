@@ -12,24 +12,13 @@ use Illuminate\Routing\Controllers\HasMiddleware; // Tambahkan ini
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel; // Tambahkan ini
 use App\Exports\ProjectsExport; // Tambahkan ini
-class ProjectController extends Controller  implements HasMiddleware
+class ProjectController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            'auth', // Middleware bawaan Laravel
-            'verified', // Middleware bawaan Laravel
-            // Middleware izin dari Spatie Laravel Permission
-            new Middleware('permission:view projects', only: ['index', 'show']),
-            new Middleware('permission:create project', only: ['create', 'store']),
-            new Middleware('permission:edit project', only: ['edit', 'update']),
-            new Middleware('permission:delete project', only: ['destroy']),
-        ];
-    }
     public function index(Request $request)
     {
         $query = Project::orderBy('created_at', 'desc');
 
+        // Logika Pencarian
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -39,18 +28,57 @@ class ProjectController extends Controller  implements HasMiddleware
             });
         }
 
+        // Logika Filter Status
         if ($request->filled('status_filter')) {
             $query->where('status', $request->input('status_filter'));
         }
 
+        // --- LOGIKA FILTER SEKTOR (SEKARANG DISIAPKAN DI CONTROLLER) ---
+        // Ambil daftar sektor unik dari semua proyek yang ada
+        $availableSectors = Project::select('sector')
+            ->distinct()
+            ->pluck('sector')
+            ->filter()
+            ->sort()
+            ->values()
+            ->toArray();
+
         if ($request->filled('sector_filter')) {
             $query->where('sector', $request->input('sector_filter'));
         }
+        // --- AKHIR LOGIKA FILTER SEKTOR ---
 
+        // LOGIKA FILTER TAHUN (SUDAH ADA)
+        $selectedYear = $request->input('year_filter');
+        $yearsFromStartDate = Project::whereNotNull('start_date')
+            ->selectRaw('DISTINCT EXTRACT(YEAR FROM start_date) as year')
+            ->pluck('year');
+        $yearsFromEndDate = Project::whereNotNull('end_date')
+            ->selectRaw('DISTINCT EXTRACT(YEAR FROM end_date) as year')
+            ->pluck('year');
+        $availableYears = $yearsFromStartDate->merge($yearsFromEndDate)
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+        rsort($availableYears);
+
+        if ($request->filled('year_filter')) {
+            $query->where(function ($q) use ($selectedYear) {
+                $q->whereYear('start_date', $selectedYear)
+                    ->orWhereYear('end_date', $selectedYear);
+            });
+        }
+        // AKHIR LOGIKA FILTER TAHUN
+
+        // Ambil proyek dengan paginasi
         $projects = $query->paginate(10)->withQueryString();
 
-        return view('admin.projects.index', compact('projects'));
+        // Kirim semua variabel yang dibutuhkan ke view
+        return view('admin.projects.index', compact('projects', 'availableYears', 'selectedYear', 'availableSectors')); // Tambahkan 'availableSectors'
     }
+
 
     /**
      * Menampilkan form untuk membuat proyek baru.
@@ -104,7 +132,6 @@ class ProjectController extends Controller  implements HasMiddleware
             // Simpan foto
             if ($request->hasFile('photos')) {
                 foreach ($request->file('photos') as $photo) {
-                    // PERBAIKAN DI SINI: Hapus 'public/' dari path pertama
                     $path = Storage::disk('public')->putFile('project_media/photos', $photo);
                     ProjectMedia::create([
                         'project_id' => $project->id,
@@ -125,7 +152,7 @@ class ProjectController extends Controller  implements HasMiddleware
                     $path = Storage::disk('public')->putFile('project_media/documents', $document);
                     ProjectMedia::create([
                         'project_id' => $project->id,
-                        'file_path' => $path, // path ini akan jadi project_media/documents/namafile.pdf
+                        'file_path' => $path,
                         'file_name' => $document->getClientOriginalName(),
                         'file_type' => $document->getClientMimeType(),
                         'media_type' => 'dokumen',
